@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FMSG ACADEMY — Edikasyon Finansyè & Kwasans Pèsonèl</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+  :root{--dark:#050f25;--dark2:#0a1a3e;--blue:#0f2d64;--gold:#d4af37;--gold-light:#ffd750;--white:#fff;--gray:#8892a4;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--dark);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+
+  /* ADMIN BAR */
+  .admin-bar{background:linear-gradient(90deg,#1a0a00,#3d2000);border-bottom:2px solid var(--gold);padding:10px 20px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:999;}
+  .admin-bar-title{font-size:13px;color:var(--gold-light);font-weight:600;letter-spacing:1px;}
+  .admin-btns{display:flex;gap:8px;flex-wrap:wrap;}
+  .admin-btn{padding:7px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .2s;}
+  .admin-btn-open{background:var(--gold);color:#050f25;}
+  .admin-btn-close{background:rgba(255,100,100,.15);border:1px solid rgba(255,100,100,.4);color:#ff8888;}
+  .admin-btn-open:hover{opacity:.9;}
+  .admin-btn-close:hover{background:rgba(255,100,100,.3);} .admin-only{display:none!important;}
+
+  /* HERO */
+  .hero{min-height:100vh;background:linear-gradient(135deg,#050f25 0%,#0a1a3e 50%,#0f2d64 100%);position:relative;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px 20px;overflow:hidden;}
+  .hero::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.08) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:pulse 4s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.5;}50%{transform:translate(-50%,-50%) scale(1.2);opacity:1;}}
+  .hero-content{position:relative;z-index:2;max-width:800px;}
+  .logo-badge{display:inline-block;border:2px solid var(--gold);padding:8px 24px;font-size:13px;font-weight:600;letter-spacing:4px;color:var(--gold);margin-bottom:30px;text-transform:uppercase;}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(42px,8vw,80px);font-weight:900;line-height:1.1;margin-bottom:10px;}
+  .hero h1 span{color:var(--gold-light);}
+  .hero-sub{font-family:'Playfair Display',serif;font-size:clamp(16px,3vw,22px);color:var(--gold);letter-spacing:2px;margin-bottom:24px;}
+  .hero p{font-size:16px;color:rgba(255,255,255,.7);max-width:600px;margin:0 auto 40px;line-height:1.8;}
+  .gold-line{width:80px;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light));margin:0 auto 40px;}
+  section{padding:80px 20px;}
+  .container{max-width:1000px;margin:0 auto;}
+  .section-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,42px);text-align:center;margin-bottom:16px;}
+  .section-title span{color:var(--gold-light);}
+  .section-sub{text-align:center;color:var(--gray);margin-bottom:50px;font-size:15px;}
+
+  /* ABOUT */
+  .about{background:var(--dark2);}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:40px;}
+  @media(max-width:640px){.about-grid,.products-grid{grid-template-columns:1fr!important;}.training-info{grid-template-columns:1fr!important;}}
+  .about-card{background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.2);border-radius:12px;padding:28px;}
+  .about-card .icon{font-size:32px;margin-bottom:14px;}
+  .about-card h3{font-size:18px;font-weight:600;margin-bottom:10px;color:var(--gold-light);}
+  .about-card p{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;}
+
+  /* BIBLIO */
+  .academy{background:var(--dark);}
+  .products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+
+  .product-card{background:linear-gradient(145deg,#0a1a3e,#0f2d64);border:1px solid rgba(212,175,55,.25);border-radius:16px;overflow:hidden;transition:transform .3s,box-shadow .3s;}
+  .product-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(212,175,55,.15);}
+
+  /* BOOK COVER */
+  .book-cover{width:100%;height:180px;object-fit:cover;display:block;}
+  .book-cover-placeholder{width:100%;height:180px;display:flex;align-items:center;justify-content:center;font-size:60px;background:linear-gradient(135deg,var(--blue),#0a1a3e);}
+
+  .product-body{padding:24px;}
+  .product-body h3{font-size:17px;font-weight:700;color:var(--gold-light);margin-bottom:10px;}
+  .product-body p{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;margin-bottom:16px;}
+  .price-badge{display:inline-block;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:14px;}
+  .price-paid{background:rgba(212,175,55,.15);border:1px solid var(--gold);color:var(--gold-light);}
+  .price-free{background:rgba(26,122,74,.15);border:1px solid #1a7a4a;color:#4ade80;}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;text-decoration:none;transition:all .2s;font-family:'DM Sans',sans-serif;}
+  .btn-gold{background:linear-gradient(135deg,var(--gold),#b8941e);color:var(--dark);width:100%;justify-content:center;}
+  .btn-gold:hover{opacity:.9;transform:scale(1.01);}
+  .btn-outline{background:transparent;border:1px solid var(--gold);color:var(--gold-light);}
+  .btn-outline:hover{background:rgba(212,175,55,.1);}
+  .btn-green{background:linear-gradient(135deg,#1a7a4a,#0f5733);color:white;width:100%;justify-content:center;}
+
+  /* ADD BOOK PLACEHOLDER */
+  .add-book-card{background:rgba(212,175,55,.03);border:2px dashed rgba(212,175,55,.25);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:320px;cursor:default;transition:border-color .3s;}
+  .add-book-card .plus{font-size:48px;color:rgba(212,175,55,.3);margin-bottom:12px;}
+  .add-book-card p{font-size:14px;color:rgba(255,255,255,.3);text-align:center;}
+
+  /* MODAL */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(5,15,37,.92);z-index:1000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);}
+  .modal-bg.open{display:flex;}
+  .modal{background:linear-gradient(145deg,#0a1a3e,#050f25);border:1px solid rgba(212,175,55,.3);border-radius:20px;padding:40px;max-width:500px;width:100%;position:relative;max-height:90vh;overflow-y:auto;}
+  .modal h2{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:8px;color:var(--gold-light);}
+  .modal .sub{font-size:14px;color:var(--gray);margin-bottom:24px;}
+  .modal-close{position:absolute;top:16px;right:20px;background:none;border:none;color:var(--gray);font-size:22px;cursor:pointer;}
+  .modal-close:hover{color:var(--white);}
+  .form-group{margin-bottom:16px;}
+  .form-group label{display:block;font-size:12px;color:var(--gray);margin-bottom:7px;text-transform:uppercase;letter-spacing:1px;}
+  .form-group input,.form-group select{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.2);border-radius:8px;padding:13px 15px;font-size:15px;color:var(--white);outline:none;font-family:'DM Sans',sans-serif;transition:border-color .2s;}
+  .form-group input:focus,.form-group select:focus{border-color:var(--gold);background:rgba(212,175,55,.05);}
+  .form-group select option{background:#0a1a3e;}
+  .natcash-box{background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.3);border-radius:10px;padding:14px 18px;text-align:center;margin:16px 0;}
+  .natcash-box .num{font-size:22px;font-weight:700;color:var(--gold-light);letter-spacing:1px;}
+  .natcash-box .name-txt{font-size:13px;color:rgba(255,255,255,.5);margin-top:4px;}
+
+  /* TRAINING */
+  .training{background:var(--dark2);}
+  .training-card{background:linear-gradient(145deg,#0a1a3e,#050f25);border:2px solid rgba(212,175,55,.3);border-radius:20px;overflow:hidden;}
+  .training-header{background:linear-gradient(135deg,var(--blue),#0a1a3e);padding:40px;text-align:center;position:relative;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .lock-overlay{position:absolute;inset:0;background:rgba(5,15,37,.78);display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+  .lock-icon{font-size:56px;margin-bottom:12px;}
+  .lock-text{font-size:20px;font-weight:700;color:var(--gold-light);margin-bottom:8px;}
+  .lock-sub{font-size:14px;color:rgba(255,255,255,.6);}
+  .training-info{padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .info-item{background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:10px;padding:16px 20px;}
+  .info-item .label{font-size:12px;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+  .editable{background:rgba(255,255,255,.05);border:1px dashed rgba(212,175,55,.4);border-radius:6px;padding:10px 14px;font-size:15px;color:var(--gold-light);font-weight:500;width:100%;outline:none;font-family:'DM Sans',sans-serif;transition:border-color .2s;resize:vertical;}
+  .editable:focus{border-color:var(--gold);background:rgba(212,175,55,.08);}
+  .editable::placeholder{color:rgba(255,255,255,.3);}
+
+  /* REGISTER */
+  .register{background:var(--dark);}
+  .form-card-main{background:linear-gradient(145deg,#0a1a3e,#050f25);border:1px solid rgba(212,175,55,.2);border-radius:16px;padding:40px;max-width:600px;margin:0 auto;position:relative;}
+  .form-locked-overlay{position:absolute;inset:0;background:rgba(5,15,37,.88);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(6px);z-index:10;}
+
+  /* BOOK SELECT */
+  .book-select-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+  @media(max-width:500px){.book-select-grid{grid-template-columns:1fr;}}
+  .book-option{border:2px solid rgba(212,175,55,.2);border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color .2s;}
+  .book-option.selected{border-color:var(--gold);}
+  .book-option img{width:100%;height:100px;object-fit:cover;display:block;}
+  .book-option-placeholder{width:100%;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px;background:linear-gradient(135deg,var(--blue),#0a1a3e);}
+  .book-option-label{font-size:12px;padding:8px 10px;color:rgba(255,255,255,.8);font-weight:600;background:rgba(0,0,0,.3);}
+
+  /* WHATSAPP */
+  .whatsapp-section{background:var(--dark2);text-align:center;padding:60px 20px;}
+  .wa-btn{display:inline-flex;align-items:center;gap:12px;background:linear-gradient(135deg,#25d366,#128c7e);color:white;padding:18px 36px;border-radius:50px;font-size:18px;font-weight:700;text-decoration:none;transition:all .3s;box-shadow:0 8px 30px rgba(37,211,102,.3);}
+  .wa-btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(37,211,102,.4);}
+
+  footer{background:#030b1a;padding:30px 20px;text-align:center;border-top:1px solid rgba(212,175,55,.15);}
+  footer .logo{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold-light);margin-bottom:8px;}
+  footer p{font-size:13px;color:var(--gray);}
+  .tag{display:inline-block;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);padding:4px 12px;border-radius:20px;font-size:12px;color:var(--gold);margin-bottom:16px;text-transform:uppercase;letter-spacing:2px;}
+  .fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- ADMIN BAR -->
+<div class="admin-bar">
+  <span class="admin-bar-title">⚙️ Kontwòl Admin — FMSG ACADEMY</span>
+  <div class="admin-btns">
+    <button class="admin-btn admin-btn-open" onclick="unlockAll()">🔓 Ouvri Tout Kadna</button>
+    <button class="admin-btn admin-btn-close" onclick="lockAll()">🔒 Fèmen Tout Kadna</button>
+    <button class="admin-btn admin-btn-open" onclick="unlockTraining()">✅ Ouvri Fòmasyon</button>
+    <button class="admin-btn admin-btn-close" onclick="lockTraining()">🔒 Fèmen Fòmasyon</button>
+    <button class="admin-btn admin-btn-open" onclick="toggleAdminMode()">⚙️ Mode Admin Liv</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="logo-badge">FMSG · ACADEMY</div>
+    <h1>🌟 Byenveni nan<br><span>FMSG ACADEMY!</span></h1>
+    <p class="hero-sub">Edikasyon Finansyè · Mindset · Kwasans Pèsonèl</p>
+    <div class="gold-line"></div>
+    <p>Nou se yon kominote ki konsantre nèt sou Edikasyon Finansyè, Chanjman Mantal (Mindset), ak Kwasans Pèsonèl. Objektif nou se akonpaye chak manm pou yo vin pi bon vèsyon tèt yo nan domèn finansyè.</p>
+    <a href="#academy" class="btn btn-gold" style="margin:0 auto;display:inline-flex;">📚 Wè Liv Nou Yo</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+  <div class="container fade-in">
+    <div class="tag">Ki sa nou fè</div>
+    <h2 class="section-title">📋 Kisa nou fè <span>egzakteman?</span></h2>
+    <p class="section-sub">Pou nou asire konesans yo byen anrasinen nan ou, nou chwazi yon fòma espesyal.</p>
+    <div class="about-grid">
+      <div class="about-card"><div class="icon">🖼️</div><h3>Kontni an Imaj</h3><p>Nou pataje vizyèl ki klè pou w ka pran tan pou w li epi kenbe enfòmasyon yo, olye w tande yon odyo epi w bliye l aprè.</p></div>
+      <div class="about-card"><div class="icon">📅</div><h3>Piblikasyon an Seri</h3><p>Kontni nou yo ap parèt an seri de 5 pati, avèk plizyè sesyon enteresan n ap pibliye chak jou, etap pa etap.</p></div>
+      <div class="about-card"><div class="icon">💡</div><h3>Edikasyon Finansyè</h3><p>Aprann jere lajan w, bati yon bidjè, soti nan dèt, ak kòmanse vwayaj libète finansyè w.</p></div>
+      <div class="about-card"><div class="icon">🧠</div><h3>Mindset & Kwasans</h3><p>Chanje fason w panse, bati bon abitid, ak devlope mantal moun ki vle reyisi nan lavi.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ACADEMY -->
+<section class="academy" id="academy">
+  <div class="container fade-in">
+    <div class="tag">FMSG ACADEMY</div>
+    <h2 class="section-title">📚 <span>Liv</span> Nou Yo</h2>
+    <p class="section-sub">Chwazi liv ki pou ou a epi kòmanse vwayaj ou jodi a.</p>
+
+    <div class="products-grid" id="books-grid">
+
+      <!-- BOOK 1: Chemen Libète Finansyè -->
+      <div class="product-card">
+        <div class="book-cover-placeholder">📘</div>
+        <div class="product-body">
+          <h3>Chemen Libète Finansyè</h3>
+          <p>Aprann jere lajan w, bati yon bidjè, ak kòmanse vwayaj libète finansyè w nan 5 etap senp. Bonus inkli.</p>
+          <div class="price-paid price-badge" id="badge-book1">💰 250 HTG</div><br>
+          <!-- ADMIN: chanje tip -->
+          <div class="admin-only" style="display:none;gap:8px;margin-bottom:12px;">
+            <button class="btn btn-outline" style="font-size:12px;padding:6px 12px;" onclick="setBookFree(1)">🎁 Gratis</button>
+            <button class="btn btn-outline" style="font-size:12px;padding:6px 12px;" onclick="setBookPaid(1)">💰 Peyan</button>
+          </div>
+          <button class="btn btn-gold" onclick="openModal(1)">📥 Telechaje</button>
+        </div>
+      </div>
+
+      <!-- BOOK 2: Kijan pou Jere Salè -->
+      <div class="product-card">
+        <div class="book-cover-placeholder">💰</div>
+        <div class="product-body">
+          <h3>Kijan pou Jere Salè ou chak Mwa</h3>
+          <p>Yon gid pratik pou ou aprann jere salè w chak mwa, evite gaspiyaj, ak kòmanse sere lajan reyèlman.</p>
+          <div class="price-paid price-badge" id="badge-book2">💰 250 HTG</div><br>
+          <div class="admin-only" style="display:none;gap:8px;margin-bottom:12px;">
+            <button class="btn btn-outline" style="font-size:12px;padding:6px 12px;" onclick="setBookFree(2)">🎁 Gratis</button>
+            <button class="btn btn-outline" style="font-size:12px;padding:6px 12px;" onclick="setBookPaid(2)">💰 Peyan</button>
+          </div>
+          <button class="btn btn-gold" onclick="openModal(2)">📥 Telechaje</button>
+        </div>
+      </div>
+
+      <!-- ADD BOOK PLACEHOLDER -->
+      <div class="add-book-card">
+        <div class="plus">+</div>
+        <p>Pwochen liv ap disponib byento</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MODAL INSCRIPTION -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2 id="modal-title">📥 Telechaje Liv la</h2>
+    <p class="sub" id="modal-sub">Ranpli enfòmasyon ou pou resevwa liv la.</p>
+
+    <div id="modal-form">
+      <div class="form-group">
+        <label>👤 Non Konplè *</label>
+        <input type="text" id="modal-name" placeholder="Non ak Prenon ou">
+      </div>
+      <div class="form-group">
+        <label>📱 Nimewo WhatsApp *</label>
+        <input type="tel" id="modal-phone" placeholder="+509 XX XX XXXX">
+      </div>
+
+      <!-- Peman section (sèlman si peyan) -->
+      <div id="payment-section" style="display:none;">
+        <div class="natcash-box">
+          <div style="font-size:12px;color:var(--gray);margin-bottom:6px;">💳 Voye peman via NatCash</div>
+          <div class="num">+509 42 98 57 39</div>
+          <div class="name-txt">Saintfleur Ricolson</div>
+        </div>
+        <div class="form-group">
+          <label>📸 Nimewo Referans Peman</label>
+          <input type="text" id="modal-ref" placeholder="Nimewo tranzaksyon ou">
+        </div>
+      </div>
+
+      <button class="btn btn-gold" style="width:100%;justify-content:center;padding:15px;margin-top:8px;" onclick="submitModal()">
+        📱 Voye sou WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TRAINING -->
+<section class="training" id="training">
+  <div class="container fade-in">
+    <div class="tag">Fòmasyon</div>
+    <h2 class="section-title">🎓 <span>Fòmasyon</span> FMSG</h2>
+    <p class="section-sub">Yon eksperyans aprantisaj konplè sou finans ak devlopman pèsonèl.</p>
+
+    <div class="training-card">
+      <div class="training-header">
+        <h3 style="font-family:'Playfair Display',serif;font-size:28px;margin-bottom:10px;">FMSG ACADEMY Fòmasyon</h3>
+        <p style="color:rgba(255,255,255,.6);font-size:14px;">Kontni konplè pou chanje lavi finansyè w</p>
+        <div class="lock-overlay" id="training-lock">
+          <div class="lock-icon">🔒</div>
+          <div class="lock-text">Fòmasyon Poko Disponib</div>
+          <div class="lock-sub">Enskri pou resevwa notifikasyon lè li louvri</div>
+        </div>
+      </div>
+
+      <div id="training-content-lock" style="position:relative;">
+      <div id="training-section-overlay" style="position:absolute;inset:0;background:rgba(5,15,37,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(6px);z-index:10;min-height:300px;">
+        <div style="font-size:56px;margin-bottom:12px;">🔒</div>
+        <div style="font-size:20px;font-weight:700;color:#ffd750;margin-bottom:8px;">Fòmasyon Poko Disponib</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.6);">Enskri pou resevwa notifikasyon lè li louvri</div>
+      </div>
+      <div class="training-info" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:40px;">
+        <div class="info-item">
+          <div class="label">📅 Dat Kòmansman</div>
+          <input class="editable" id="start-date" placeholder="Egz: 15 Jiyè 2025" type="text">
+        </div>
+        <div class="info-item">
+          <div class="label">📅 Dat Fen</div>
+          <input class="editable" id="end-date" placeholder="Egz: 14 Out 2025" type="text">
+        </div>
+        <div class="info-item">
+          <div class="label">📍 Kote Fòmasyon an</div>
+          <input class="editable" id="location" placeholder="Egz: 100% WhatsApp" type="text">
+        </div>
+        <div class="info-item">
+          <div class="label">📝 Non Fòmasyon an</div>
+          <input class="editable" id="training-name" placeholder="Egz: Finans pou Débutant" type="text">
+        </div>
+        <div class="info-item" style="grid-column:1/-1;">
+          <div class="label">📄 Deskripsyon Fòmasyon</div>
+          <textarea class="editable" id="training-desc" rows="3" placeholder="Ekri sa fòmasyon an ap kouvri..."></textarea>
+        </div>
+      </div>
+    </div>
+      </div><!-- end training-content-lock -->
+  </div>
+</section>
+
+<!-- REGISTER -->
+<section class="register" id="register">
+  <div class="container fade-in">
+    <div class="tag">Enskipsyon Fòmasyon</div>
+    <h2 class="section-title">📝 Fòm <span>Enskipsyon</span></h2>
+    <p class="section-sub">Ranpli fòm sa a apre peman ou — nou pral konfime patisipasyon w sou WhatsApp.</p>
+
+    <div class="form-card-main">
+      <div class="form-locked-overlay" id="form-lock">
+        <div style="font-size:48px;margin-bottom:16px;">🔒</div>
+        <div style="font-size:18px;font-weight:700;color:var(--gold-light);margin-bottom:8px;">Fòmasyon Poko Disponib</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.6);text-align:center;max-width:280px;">Fòm enskipsyon an pral ouvri lè dat fòmasyon an konfime.</div>
+      </div>
+
+      <div class="form-group">
+        <label>👤 Non Konplè *</label>
+        <input type="text" id="reg-name" placeholder="Non ak Prenon ou">
+      </div>
+      <div class="form-group">
+        <label>📱 Nimewo Telefòn *</label>
+        <input type="tel" id="reg-phone" placeholder="+509 XX XX XXXX">
+      </div>
+      <div class="form-group">
+        <label>📧 Imèl (Opsyonèl)</label>
+        <input type="email" id="reg-email" placeholder="ou@email.com">
+      </div>
+      <div class="form-group">
+        <label>🏙️ Vil ou Rete</label>
+        <input type="text" id="reg-city" placeholder="Pòtoprens, Jakmel...">
+      </div>
+
+      <!-- Book selection with covers -->
+      <div class="form-group">
+        <label>📚 Chwazi Liv ou Vle (Opsyonèl)</label>
+        <div class="book-select-grid">
+          <div class="book-option" id="bopt1" onclick="selectBook(1)">
+            <div class="book-option-placeholder">📘</div>
+            <div class="book-option-label">Chemen Libète Finansyè</div>
+          </div>
+          <div class="book-option" id="bopt2" onclick="selectBook(2)">
+            <div class="book-option-placeholder">💰</div>
+            <div class="book-option-label">Kijan pou Jere Salè ou chak Mwa</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>📸 Nimewo Referans Peman Fòmasyon</label>
+        <input type="text" id="reg-ref" placeholder="Nimewo tranzaksyon ou">
+      </div>
+
+      <button class="btn btn-gold" style="width:100%;justify-content:center;padding:16px;" onclick="submitRegForm()">
+        🚀 Soumèt — Voye sou WhatsApp
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- WHATSAPP -->
+<section class="whatsapp-section">
+  <div class="tag">Kontak</div>
+  <h2 class="section-title" style="margin-bottom:16px;">💬 Kontakte <span>Nou</span></h2>
+  <p style="color:var(--gray);font-size:15px;margin-bottom:16px;">Gen yon kesyon? Voye prèv peman? Kontakte nou dirèkteman sou WhatsApp.</p>
+  <a href="https://wa.me/50942985739?text=Bonjou%2C%20mwen%20vle%20enfòmasyon%20sou%20FMSG%20Biblio." target="_blank" class="wa-btn">
+    <span style="font-size:24px;">📱</span> Kontakte nou sou WhatsApp
+  </a>
+  <p style="color:var(--gray);font-size:13px;margin-top:20px;">📧 fmsgbusiness@gmail.com</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">FMSG · ACADEMY</div>
+  <p>Edikasyon Finansyè · Mindset · Kwasans Pèsonèl · Ayiti 🇭🇹</p>
+  <p style="margin-top:8px;font-size:12px;">© 2026 FMSG ACADEMY · Tout dwa rezève</p>
+</footer>
+
+<script>
+// ADMIN MODE
+let adminMode = false;
+function toggleAdminMode() {
+  adminMode = !adminMode;
+  document.querySelectorAll('.admin-only').forEach(el => {
+    el.style.display = adminMode ? 'flex' : 'none';
+  });
+}
+
+// STATE
+const bookState = {
+  1: { type: 'paid', title: 'Chemen Libète Finansyè', link: 'https://drive.google.com/file/d/1S4S4NW-gR6mnNGIsNio-Sg0J4MEDOpGv/view' },
+  2: { type: 'paid', title: 'Kijan pou Jere Salè ou chak Mwa', link: '' }
+};
+let currentBook = null;
+let selectedBookReg = null;
+
+// SCROLL ANIMATION
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: .1 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// ADMIN: UNLOCK/LOCK ALL
+function unlockAll() {
+  document.getElementById('training-lock').style.display = 'none';
+  document.getElementById('training-section-overlay').style.display = 'none';
+  document.getElementById('form-lock').style.display = 'none';
+}
+function lockAll() {
+  document.getElementById('training-lock').style.display = 'flex';
+  document.getElementById('training-section-overlay').style.display = 'flex';
+  document.getElementById('form-lock').style.display = 'flex';
+}
+
+// TRAINING
+function unlockTraining() {
+  document.getElementById('training-lock').style.display = 'none';
+  document.getElementById('training-section-overlay').style.display = 'none';
+  document.getElementById('form-lock').style.display = 'none';
+}
+function lockTraining() {
+  document.getElementById('training-lock').style.display = 'flex';
+  document.getElementById('training-section-overlay').style.display = 'flex';
+  document.getElementById('form-lock').style.display = 'flex';
+}
+
+// BOOK TYPE
+function setBookFree(id) {
+  bookState[id].type = 'free';
+  const badge = document.getElementById('badge-book' + id);
+  badge.className = 'price-free price-badge';
+  badge.textContent = '🎁 GRATIS';
+}
+function setBookPaid(id) {
+  bookState[id].type = 'paid';
+  const badge = document.getElementById('badge-book' + id);
+  badge.className = 'price-paid price-badge';
+  badge.textContent = '💰 250 HTG';
+}
+
+// MODAL
+function openModal(id) {
+  currentBook = id;
+  const book = bookState[id];
+  document.getElementById('modal-title').textContent = '📥 ' + book.title;
+  document.getElementById('modal-name').value = '';
+  document.getElementById('modal-phone').value = '';
+  if(document.getElementById('modal-ref')) document.getElementById('modal-ref').value = '';
+
+  const paySection = document.getElementById('payment-section');
+  if(book.type === 'paid') {
+    paySection.style.display = 'block';
+    document.getElementById('modal-sub').textContent = 'Ranpli enfòmasyon ou epi voye peman an pou resevwa liv la.';
+  } else {
+    paySection.style.display = 'none';
+    document.getElementById('modal-sub').textContent = 'Ranpli enfòmasyon ou — nou pral voye liv la dirèkteman sou WhatsApp ou.';
+  }
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-bg').classList.remove('open');
+}
+
+document.getElementById('modal-bg').addEventListener('click', function(e) {
+  if(e.target === this) closeModal();
+});
+
+function submitModal() {
+  const name = document.getElementById('modal-name').value.trim();
+  const phone = document.getElementById('modal-phone').value.trim();
+  if(!name || !phone) { alert('Tanpri ranpli non ak nimewo WhatsApp ou.'); return; }
+
+  const book = bookState[currentBook];
+  let msg = '';
+  if(book.type === 'free') {
+    msg = `Bonjou! Mwen vle telechaje liv la gratis.\n\nLiv: ${book.title}\nNon: ${name}\nWhatsApp: ${phone}\n\nMèsi!`;
+  } else {
+    const ref = document.getElementById('modal-ref').value.trim();
+    msg = `Bonjou! Mwen vle achte liv la.\n\nLiv: ${book.title} — 250 HTG\nNon: ${name}\nWhatsApp: ${phone}\nReferans peman: ${ref || 'Map voye prèv la'}\n\nMèsi!`;
+  }
+  window.open(`https://wa.me/50942985739?text=${encodeURIComponent(msg)}`, '_blank');
+  closeModal();
+}
+
+// BOOK SELECTION IN REGISTER FORM
+function selectBook(id) {
+  selectedBookReg = id;
+  document.querySelectorAll('.book-option').forEach(el => el.classList.remove('selected'));
+  document.getElementById('bopt' + id).classList.add('selected');
+}
+
+// REGISTER FORM SUBMIT
+function submitRegForm() {
+  const name = document.getElementById('reg-name').value.trim();
+  const phone = document.getElementById('reg-phone').value.trim();
+  if(!name || !phone) { alert('Tanpli ranpli non ak nimewo telefòn ou.'); return; }
+  const email = document.getElementById('reg-email').value.trim();
+  const city = document.getElementById('reg-city').value.trim();
+  const ref = document.getElementById('reg-ref').value.trim();
+  const book = selectedBookReg ? bookState[selectedBookReg].title : 'Pa chwazi';
+  const msg = `Bonjou! Mwen vle enskri nan fòmasyon FMSG ACADEMY.\n\nNon: ${name}\nTelefòn: ${phone}${email ? '\nImèl: ' + email : ''}${city ? '\nVil: ' + city : ''}\nLiv chwazi: ${book}\nReferans peman fòmasyon: ${ref || 'Map voye prèv la'}\n\nMèsi!`;
+  window.open(`https://wa.me/50942985739?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ADMIN ACCESS VIA URL PARAMETER
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('admin') === 'Saintfleurricolson') {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('.admin-bar').style.display = 'flex';
+    });
+    // Also try immediately
+    const bar = document.querySelector('.admin-bar');
+    if (bar) bar.style.display = 'flex';
+  }
+})();
+</script>
+
+
+</body>
+</html>
